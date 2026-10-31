@@ -1,0 +1,55 @@
+AURA HEALTH — PDF KNOWLEDGE BASE EDITION
+
+RUN ON WINDOWS
+1. Extract the ZIP.
+2. Open Command Prompt in this folder.
+3. Install / start Ollama.
+4. Run: ollama pull qwen2.5:1.5b
+5. Double-click start.bat.
+6. Open http://127.0.0.1:8000
+
+MANUAL SETUP
+  py -m venv .venv
+  .venv\Scripts\activate
+  pip install -r requirements.txt
+  ollama pull qwen2.5:1.5b
+  python -m uvicorn app:app --host 127.0.0.1 --port 8000
+
+PDF KNOWLEDGE BASE
+The application reads only the four PDF documents in knowledge_base/.
+It extracts each PDF page, ranks relevant pages using keyword overlap, and sends
+the selected passages to Qwen through the local Ollama API. The CSV files in
+data_sources/ are retained only as original source inputs for audit/re-generation;
+the chatbot does not load or retrieve from CSV.
+
+DOCUMENTS
+- Health_FAQ.pdf: 10 pages
+- Vaccination.pdf: 10 pages
+- Outbreak.pdf: 10 pages
+- General_Medical_Questions.pdf: 10 pages
+
+QWEN CONTENT GENERATION
+Run:
+  python scripts/generate_pdfs_with_qwen.py
+
+This calls the local Ollama model Qwen 2.5 (1.5B) to draft exactly 10 structured
+learning pages per document from the original CSV topic records plus the general
+medical topic outline, then exports the PDFs. Review generated health content
+against current authoritative medical sources before public or clinical use.
+
+OLLAMA NETWORK NOTE
+If this app runs on another machine or cloud host, localhost points to that host.
+The host must be able to reach your Ollama service; a local Windows Ollama process
+is not automatically reachable from Streamlit Cloud or another remote server.
+
+MEDICAL SAFETY
+General educational information only. Not diagnosis or treatment. The emergency
+keyword detector is a basic safeguard, not validated clinical triage.
+
+
+GENERATOR FIX (JSONDecodeError)
+The PDF generator now retries malformed/truncated Qwen JSON up to 4 times.
+It saves completed pages in generation_cache/ and resumes from the first missing
+page. You can safely rerun the command after a failure; it should reuse saved pages.
+The generation prompt is shorter and num_predict has been increased to reduce
+truncated JSON output.

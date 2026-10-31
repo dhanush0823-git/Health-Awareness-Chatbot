@@ -1,0 +1,18 @@
+AURA PDF KNOWLEDGE ASSISTANT — PROJECT FILES
+
+.env.example  (79 bytes)
+SETUP.txt  (1,745 bytes)
+app.py  (11,838 bytes)
+data_sources/health_faq.csv  (1,073 bytes)
+data_sources/outbreak.csv  (479 bytes)
+data_sources/vaccination.csv  (589 bytes)
+knowledge_base/General_Medical_Questions.pdf  (30,771 bytes)
+knowledge_base/Health_FAQ.pdf  (36,152 bytes)
+knowledge_base/Outbreak.pdf  (32,057 bytes)
+knowledge_base/Vaccination.pdf  (33,707 bytes)
+requirements.txt  (94 bytes)
+scripts/generate_pdfs_with_qwen.py  (9,263 bytes)
+start.bat  (305 bytes)
+static/app.js  (5,350 bytes)
+static/index.html  (5,487 bytes)
+static/styles.css  (11,037 bytes)

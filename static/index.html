@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#060b14"/>
+<meta name="description" content="AURA — an AI-powered health information companion."/>
+<title>AURA — AI Health Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css"/>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="ambient a1"></div><div class="ambient a2"></div><div class="ambient a3"></div>
+<div class="spotlight" id="spotlight"></div>
+<div class="scrim" id="scrim"></div>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#"><span class="brand-symbol">✳</span><span><b>AURA</b><small>Health intelligence</small></span></a>
+    <button class="new-chat ripple" id="newChat"><span>＋</span> New conversation <kbd>⌘ K</kbd></button>
+    <div class="side-label">Workspace</div>
+    <button class="nav-item active"><span class="nav-icon">◈</span> Health assistant <span class="nav-indicator"></span></button>
+    <div class="side-label">Knowledge sources</div>
+    <div class="source-list">
+      <div class="source-item"><span class="source-icon aqua">▤</span><span>Health FAQ</span><i id="faqCount" data-count>—</i></div>
+      <div class="source-item"><span class="source-icon blue">✚</span><span>Vaccination</span><i id="vaxCount" data-count>—</i></div>
+      <div class="source-item"><span class="source-icon violet">⌁</span><span>Outbreak data</span><i id="outbreakCount" data-count>—</i></div>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="model-card">
+        <div class="model-card-top"><span class="pulse-dot"></span><span>Local AI model</span><span class="local-tag">Private</span></div>
+        <strong>Qwen 2.5 · 1.5B</strong>
+        <small id="modelStatus">Checking Ollama connection…</small>
+      </div>
+      <div class="profile-row"><div class="avatar">A</div><div><b>AURA Assistant</b><small>Personal health guide</small></div><span class="more">···</span></div>
+    </div>
+  </aside>
+
+  <main class="main-area" id="mainArea">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+      <div class="breadcrumb">Workspace <span>/</span> <b>Health assistant</b></div>
+      <div class="top-actions"><div class="privacy-pill"><span class="online-indicator"></span> Private session</div><button class="icon-button" id="clearTop" title="New conversation" aria-label="New conversation">↻</button></div>
+    </header>
+
+    <section class="content-wrap" id="scrollArea">
+      <div class="welcome" id="welcome">
+        <div class="orb" aria-hidden="true"><i></i><i></i><i></i><span>✳</span></div>
+        <div class="welcome-kicker r" style="--d:.05s"><span class="spark">✦</span> Your personal health companion</div>
+        <h1 class="r" style="--d:.15s" id="heroTitle">Clarity for your health.<br><span>Confidence for every day.</span></h1>
+        <p class="r" style="--d:.28s">Explore health information, understand common symptoms, and make sense of prevention and wellness — with an AI assistant designed to inform, not diagnose.</p>
+        <div class="hero-meta r" style="--d:.38s"><span class="online-indicator"></span> Powered by local AI <span class="meta-divider">·</span> Your conversations stay on this device</div>
+        <div class="feature-grid">
+          <button class="feature-card tilt r" style="--d:.48s" data-prompt="What are common signs of dehydration and how can I prevent it?"><span class="feature-icon aqua-bg">⌁</span><span><b>Symptoms &amp; wellness</b><small>Understand common symptoms and everyday health.</small></span><i>↗</i></button>
+          <button class="feature-card tilt r" style="--d:.58s" data-prompt="Why is vaccination important and how does it work?"><span class="feature-icon blue-bg">✚</span><span><b>Vaccination</b><small>Learn about immunization and prevention.</small></span><i>↗</i></button>
+          <button class="feature-card tilt r" style="--d:.68s" data-prompt="How can communities reduce the spread of infectious diseases?"><span class="feature-icon violet-bg">⌘</span><span><b>Public health</b><small>Explore outbreaks, hygiene and community care.</small></span><i>↗</i></button>
+        </div>
+        <div class="chips r" style="--d:.8s">
+          <button class="chip" data-prompt="How much sleep do adults need?">😴 Sleep needs</button>
+          <button class="chip" data-prompt="What are the early symptoms of flu vs cold?">🤧 Flu vs cold</button>
+          <button class="chip" data-prompt="How does handwashing prevent infection?">🧼 Handwashing</button>
+          <button class="chip" data-prompt="Which vaccines do children usually need?">💉 Child vaccines</button>
+        </div>
+      </div>
+
+      <section class="chat-section" id="chatSection">
+        <div class="chat-heading"><div><span class="section-eyebrow">Conversation</span><h2>Your health, understood.</h2></div><div class="chat-tools"><span class="secure-label">⌑ Encrypted in transit</span><button id="clearChat" class="text-button">Clear chat</button></div></div>
+        <div id="messages" class="messages" aria-live="polite"></div>
+      </section>
+
+      <div class="composer-wrap">
+        <button class="scroll-down" id="scrollDown" aria-label="Scroll to latest">↓</button>
+        <div class="composer" id="composer">
+          <textarea id="messageInput" rows="1" placeholder="Ask anything about health…" maxlength="3000"></textarea>
+          <div class="composer-bottom"><div class="composer-hints"><span class="hint-icon">✧</span> AURA can make mistakes. Verify important health decisions with a professional.</div>
+            <div class="send-group"><svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"/><circle id="ringFill" class="fill" cx="18" cy="18" r="15"/></svg><button id="sendButton" class="send-button ripple" aria-label="Send message"><span>Send</span><b>↑</b></button></div>
+          </div>
+        </div>
+        <div class="composer-footer"><span>AI-generated information · Not a medical diagnosis</span><span id="charCount">0 / 3000</span></div>
+      </div>
+      <footer><span>✳ AURA HEALTH</span><span>Built for better-informed everyday decisions.</span></footer>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
